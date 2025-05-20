@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Quotes</title>
+    
+    <!-- icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+        /* this code is changed in media queries */
+        *, ::before, ::after {margin: 0; box-sizing: border-box;}
+        a {text-decoration: none;}
+        button{padding: 0; cursor: pointer;}
+        html{font-size: 15px;}
+        body{font: 16px/1.3 system-ui, sans-serif; padding: 10px;}
+        img{vertical-align: bottom;}
+        h1{color: #466c36; font-size: 2.5rem;}
+        h2{color: #466c36; font-size: 2rem;}
+        h3{color: #97ec75; font-size: 1.4rem;}
+        h4{color: #97ec75; font-size: 1.2rem;}
+
+        body {background: linear-gradient(#31318c, #5757cd); display: flex; justify-content: center; align-items: center; height: 100vh;}
+        .btn, select, [type="button"], [type="submit"], input[type="reset"], input[type="text"],input[type="number"],input[type="password"], input[type="search"], input[type="email"] 
+        { height: 36px; padding: 8px 12px; border: 1px solid rgb(233, 219, 219); color: inherit; border-radius: 5px; vertical-align: middle; margin: 5px;}
+
+        .quote-container {
+            width: 500px;
+            background: rgb(250, 250, 255);
+            padding: 1rem 1.4rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgb(87, 71, 71);
+        }
+        .quote-container h2 {text-align: center; margin: 0.8rem 0;}
+
+        .content-box {
+            display: flex;
+            justify-content: center;
+        }
+        .content-box i {color: #466c36;}
+        .content-box i:first-child {margin-right: 5px;}
+        .content-box i:last-child {display: flex; align-items: flex-end;}
+        .content-box p {font-size: 1.3rem;}
+        .content-box + .author {color: rgb(107, 92, 92); text-align: right; font-size: 1.2rem; margin-top: 1rem;}
+
+        .footer {
+            width: 94%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgb(240, 215, 215);
+            margin: 2rem auto 0.5rem;
+            color: #6078f0;
+        }
+        .footer .icons {
+            display: flex;
+            width: 180px; padding: 0 1rem;
+        }
+        .icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border: 1px solid;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            transition: 0.5s;
+        }
+        .icons a:hover {background: rgb(106, 128, 214);}
+        .icons a {padding: 2px; font-size: 1rem; color: inherit; transition: 0.5s;}
+        .icons a:hover {color: rgb(202, 230, 202);}
+        .quote-container .btn {background: #6078f0; color: #fee;}
+        .btn.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+
+        @media screen and (max-width: 600px) {
+            .quote-container h2 {
+                font-size: 1.8rem;
+            }
+            .quote-container .content {font-size: 1.2rem;}
+            .quote-container .footer {
+                flex-direction: column-reverse;
+            }
+            .footer .icons {
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="quote-container">
+        <h2>Quote of the Day</h2>
+        <div class="content-box">
+            <i class="fa-solid fa-quote-left"></i>
+            <p class="content">Never give up because you never know if the next try is going to be the last one that works.</p>
+            <i class="fa-solid fa-quote-right"></i>
+        </div>
+        <p class="author"><i>--Writer Name</i></p>
+        <div class="footer">
+            <div class="icons">
+                <a href="#" id="sound" title="Increase volue" class="fa-solid fa-volume-high"></a>
+                <a href="#" id="copy" title="Copy the quote" class="fa-solid fa-copy"></a>
+                <a href="#" id="whatsapp" title="Follow me on whatsapp" class="fa-brands fa-whatsapp"></a>
+            </div>
+            <button class="btn">New Quote</button>
+        </div>
+    </div>
+
+    <script>
+
+        const content = document.querySelector(".content");
+        qotAuthor = document.querySelector(".author"),
+        nexBtn = document.querySelector(".btn"),
+        soundBtn = document.querySelector("#sound"),
+        copydBtn = document.querySelector("#copy"),
+        whatsAppBtn = document.querySelector("#whatsapp");
+
+        function getRandomQuote() {
+            nexBtn.classList.add("loading");
+            nexBtn.innerHTML = "Loading..";
+            fetch("https://api.quotable.io/random").then(res => res.json()).then(result => {
+                content.innerHTML = result.content;
+                qotAuthor.style.fontStyle = "italic";
+                qotAuthor.innerHTML = `-- ${result.author}`;
+                nexBtn.innerHTML = "New Quote";
+                nexBtn.classList.remove("loading");
+                // console.log(result);
+            });
+        }
+
+        soundBtn.addEventListener("click", () => {
+            // the SpeechSynthesisUtterance is web speech api that represents a speech request
+            let utterances = new SpeechSynthesisUtterance(`${content.textContent} by ${qotAuthor.innerHTML}`);
+            // speak method of speechSynthesis speaks the utterances
+            speechSynthesis.speak(utterances);
+        });
+
+        copydBtn.addEventListener("click", () => {
+            // copying the quote text on copyBtn click
+            // writeText() property writes the specified text string to the system clipboard
+            navigator.clipboard.writeText(content.innerHTML);
+        });
+
+        nexBtn.addEventListener("click", getRandomQuote);
+
+        
+        
+      
+
+
+    </script>
+</body>
+</html>
+
+
+
