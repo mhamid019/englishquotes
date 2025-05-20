@@ -132,7 +132,7 @@
         function getRandomQuote() {
             nexBtn.classList.add("loading");
             nexBtn.innerHTML = "Loading..";
-            fetch("https://api.quotable.io/random").then(res => res.json()).then(result => {
+            fetch("http://api.quotable.io/random").then(res => res.json()).then(result => {
                 content.innerHTML = result.content;
                 qotAuthor.style.fontStyle = "italic";
                 qotAuthor.innerHTML = `-- ${result.author}`;
