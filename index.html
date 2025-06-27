@@ -127,7 +127,7 @@
             <div class="icons">
                 <a href="#" id="sound" title="Increase volue" class="fa-solid fa-volume-high"></a>
                 <a href="#" id="copy" title="Copy the quote" class="fa-solid fa-copy"></a>
-                <a href="#" id="whatsapp" title="Follow me on whatsapp" class="fa-brands fa-whatsapp"></a>
+                <a href="https://web.whatsapp.com" id="whatsapp" title="Follow me on whatsapp" class="fa-brands fa-whatsapp" target="_blank"></a>
             </div>
             <button class="btn">New Quote</button>
         </div>
@@ -155,17 +155,19 @@
             });
         }
 
-        soundBtn.addEventListener("click", () => {
+        soundBtn.addEventListener("click", (e) => {
             // the SpeechSynthesisUtterance is web speech api that represents a speech request
             let utterances = new SpeechSynthesisUtterance(`${content.textContent} by ${qotAuthor.innerHTML}`);
             // speak method of speechSynthesis speaks the utterances
             speechSynthesis.speak(utterances);
+            e.preventDefault();
         });
 
-        copydBtn.addEventListener("click", () => {
+        copydBtn.addEventListener("click", (e) => {
             // copying the quote text on copyBtn click
             // writeText() property writes the specified text string to the system clipboard
             navigator.clipboard.writeText(content.innerHTML);
+            e.preventDefault();
         });
 
         nexBtn.addEventListener("click", getRandomQuote);
