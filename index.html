@@ -164,49 +164,54 @@
     </div>
   </div>
 
-  <script>
-    const content = document.querySelector(".content");
-    const qotAuthor = document.querySelector(".author");
-    const nexBtn = document.querySelector(".btn");
-    const soundBtn = document.querySelector("#sound");
-    const copydBtn = document.querySelector("#copy");
 
-    function getRandomQuote() {
-      nexBtn.classList.add("loading");
-      nexBtn.innerHTML = "Loading...";
 
-      fetch("https://api.quotable.io/random")
-        .then(res => res.json())
-        .then(result => {
-          content.innerHTML = result.content;
-          qotAuthor.innerHTML = `-- ${result.author}`;
-          nexBtn.innerHTML = "New Quote";
-          nexBtn.classList.remove("loading");
-        })
-        .catch(err => {
-          content.innerHTML = "Oops! Could not fetch quote.";
-          qotAuthor.innerHTML = "";
-          nexBtn.innerHTML = "Try Again";
-          nexBtn.classList.remove("loading");
-          console.error(err);
-        });
+<script>
+  const content = document.querySelector(".content");
+  const qotAuthor = document.querySelector(".author");
+  const nexBtn = document.querySelector(".btn");
+  const soundBtn = document.querySelector("#sound");
+  const copydBtn = document.querySelector("#copy");
+
+  async function getRandomQuote() {
+    nexBtn.classList.add("loading");
+    nexBtn.innerHTML = "Loading...";
+
+    try {
+      // ✅ Working free API
+      const res = await fetch("https://dummyjson.com/quotes/random");
+      const result = await res.json();
+
+      content.textContent = result.quote;
+      qotAuthor.textContent = `-- ${result.author}`;
+    } catch (err) {
+      content.textContent = "Oops! Could not fetch quote 😞";
+      qotAuthor.textContent = "";
+      console.error(err);
+    } finally {
+      nexBtn.classList.remove("loading");
+      nexBtn.innerHTML = "New Quote";
     }
+  }
 
-    // Load initial quote
-    getRandomQuote();
+  // Load initial quote
+  getRandomQuote();
 
-    soundBtn.addEventListener("click", (e) => {
-      let utterance = new SpeechSynthesisUtterance(`${content.textContent} by ${qotAuthor.textContent}`);
-      speechSynthesis.speak(utterance);
-      e.preventDefault();
-    });
+  soundBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    let utterance = new SpeechSynthesisUtterance(`${content.textContent} by ${qotAuthor.textContent}`);
+    speechSynthesis.speak(utterance);
+  });
 
-    copydBtn.addEventListener("click", (e) => {
-      navigator.clipboard.writeText(`${content.textContent} — ${qotAuthor.textContent}`);
-      e.preventDefault();
-    });
+  copydBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(`${content.textContent} — ${qotAuthor.textContent}`);
+  });
 
-    nexBtn.addEventListener("click", getRandomQuote);
-  </script>
+  nexBtn.addEventListener("click", getRandomQuote);
+</script>
+
+
+
 </body>
 </html>
