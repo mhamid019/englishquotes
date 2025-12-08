@@ -167,6 +167,23 @@
       content: " ⏳";
     }
 
+
+    .developer {
+      width: 350px;
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .developer a {
+      color: #fef;
+    }
+
+    .developer a:hover {
+      text-transform: underline !important;
+    }
+
     @media screen and (max-width: 600px) {
       .quote-container h2 {
         font-size: 1.8rem;
@@ -202,13 +219,20 @@
       <div class="icons">
         <a href="#" id="sound" title="Speak Quote" class="fa-solid fa-volume-high"></a>
         <a href="#" id="copy" title="Copy the quote" class="fa-solid fa-copy"></a>
-        <a href="https://web.whatsapp.com" id="whatsapp" title="Follow me on WhatsApp" class="fa-brands fa-whatsapp"
+        <a href="https://web.whatsapp.com" id="whatsapp" title="Share the Quote" class="fa-brands fa-whatsapp"
           target="_blank"></a>
       </div>
       <button class="btn">New Quote</button>
     </div>
   </div>
 
+
+  <div class="developer">
+    <marquee onmouseover="this.stop();" onmouseout="this.start();" scrollamount="6">
+      <a href="https://wa.me/80906626363?text=Hello%20there!" target="_blank"> Message Me on WhatsApp</a>
+
+    </marquee>
+  </div>
 
 
   <script>
