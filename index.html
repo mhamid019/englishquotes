@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -11,10 +12,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
-    *, ::before, ::after { margin: 0; box-sizing: border-box; }
-    a { text-decoration: none; }
-    button { padding: 0; cursor: pointer; }
-    html { font-size: 15px; }
+    *,
+    ::before,
+    ::after {
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    button {
+      padding: 0;
+      cursor: pointer;
+    }
+
+    html {
+      font-size: 15px;
+    }
+
     body {
       font: 16px/1.3 system-ui, sans-serif;
       padding: 10px;
@@ -53,6 +70,7 @@
       box-shadow: 0 0 10px rgb(87, 71, 71);
       overflow: hidden;
     }
+
     .quote-container::before {
       content: '';
       position: absolute;
@@ -64,6 +82,7 @@
       left: 0;
       z-index: 1;
     }
+
     .quote-container h2 {
       text-align: center;
       margin-bottom: 2rem;
@@ -75,13 +94,25 @@
       display: flex;
       justify-content: center;
     }
-    .content-box i { color: #466c36; }
-    .content-box i:first-child { margin-right: 5px; }
-    .content-box i:last-child { display: flex; align-items: flex-end; }
+
+    .content-box i {
+      color: #466c36;
+    }
+
+    .content-box i:first-child {
+      margin-right: 5px;
+    }
+
+    .content-box i:last-child {
+      display: flex;
+      align-items: flex-end;
+    }
+
     .content-box p {
       font-size: 1.3rem;
     }
-    .content-box + .author {
+
+    .content-box+.author {
       color: rgb(107, 92, 92);
       text-align: right;
       font-size: 1.2rem;
@@ -98,11 +129,13 @@
       margin: 2rem auto 0.5rem;
       color: #6078f0;
     }
+
     .footer .icons {
       display: flex;
       width: 180px;
       padding: 0 1rem;
     }
+
     .icons a {
       display: flex;
       justify-content: center;
@@ -114,6 +147,7 @@
       margin-right: 0.5rem;
       transition: 0.5s;
     }
+
     .icons a:hover {
       background: rgb(106, 128, 214);
       color: rgb(202, 230, 202);
@@ -123,19 +157,29 @@
       background: #6078f0;
       color: #fee;
     }
+
     .btn.loading {
       opacity: 0.7;
       pointer-events: none;
+    }
+
+    .btn.loading::after {
+      content: " ⏳";
     }
 
     @media screen and (max-width: 600px) {
       .quote-container h2 {
         font-size: 1.8rem;
       }
-      .quote-container .content { font-size: 1.2rem; }
+
+      .quote-container .content {
+        font-size: 1.2rem;
+      }
+
       .quote-container .footer {
         flex-direction: column-reverse;
       }
+
       .footer .icons {
         width: 100%;
         justify-content: center;
@@ -158,7 +202,8 @@
       <div class="icons">
         <a href="#" id="sound" title="Speak Quote" class="fa-solid fa-volume-high"></a>
         <a href="#" id="copy" title="Copy the quote" class="fa-solid fa-copy"></a>
-        <a href="https://web.whatsapp.com" id="whatsapp" title="Follow me on WhatsApp" class="fa-brands fa-whatsapp" target="_blank"></a>
+        <a href="https://web.whatsapp.com" id="whatsapp" title="Follow me on WhatsApp" class="fa-brands fa-whatsapp"
+          target="_blank"></a>
       </div>
       <button class="btn">New Quote</button>
     </div>
@@ -166,52 +211,85 @@
 
 
 
-<script>
-  const content = document.querySelector(".content");
-  const qotAuthor = document.querySelector(".author");
-  const nexBtn = document.querySelector(".btn");
-  const soundBtn = document.querySelector("#sound");
-  const copydBtn = document.querySelector("#copy");
+  <script>
+    const content = document.querySelector(".content");
+    const qotAuthor = document.querySelector(".author");
+    const nexBtn = document.querySelector(".btn");
+    const soundBtn = document.querySelector("#sound");
+    const copydBtn = document.querySelector("#copy");
 
-  async function getRandomQuote() {
-    nexBtn.classList.add("loading");
-    nexBtn.innerHTML = "Loading...";
+    async function getRandomQuote() {
+      nexBtn.classList.add("loading");
+      nexBtn.innerHTML = "Loading...";
 
-    try {
-      // ✅ Working free API
-      const res = await fetch("https://dummyjson.com/quotes/random");
-      const result = await res.json();
+      try {
+        // ✅ Working free API
+        const res = await fetch("https://dummyjson.com/quotes/random");
+        const result = await res.json();
 
-      content.textContent = result.quote;
-      qotAuthor.textContent = `-- ${result.author}`;
-    } catch (err) {
-      content.textContent = "Oops! Could not fetch quote 😞";
-      qotAuthor.textContent = "";
-      console.error(err);
-    } finally {
-      nexBtn.classList.remove("loading");
-      nexBtn.innerHTML = "New Quote";
+        content.textContent = result.quote;
+        qotAuthor.textContent = `-- ${result.author}`;
+      } catch (err) {
+        content.textContent = "Oops! Could not fetch quote 😞";
+        qotAuthor.textContent = "";
+        console.error(err);
+      } finally {
+        nexBtn.classList.remove("loading");
+        nexBtn.innerHTML = "New Quote";
+      }
     }
-  }
 
-  // Load initial quote
-  getRandomQuote();
+    // Load initial quote
+    getRandomQuote();
 
-  soundBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    let utterance = new SpeechSynthesisUtterance(`${content.textContent} by ${qotAuthor.textContent}`);
-    speechSynthesis.speak(utterance);
-  });
+    // soundBtn.addEventListener("click", (e) => {
+    //   e.preventDefault();
+    //   let utterance = new SpeechSynthesisUtterance(`${content.textContent} by ${qotAuthor.textContent}`);
+    //   speechSynthesis.speak(utterance);
+    // });
 
-  copydBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    navigator.clipboard.writeText(`${content.textContent} — ${qotAuthor.textContent}`);
-  });
+    soundBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (content.textContent === "Loading quote...") return;
+      speechSynthesis.speak(new SpeechSynthesisUtterance(`${content.textContent}, quote by ${qotAuthor.textContent}`));
+    });
 
-  nexBtn.addEventListener("click", getRandomQuote);
-</script>
+
+    // copydBtn.addEventListener("click", (e) => {
+    //   e.preventDefault();
+    //   navigator.clipboard.writeText(`${content.textContent} — ${qotAuthor.textContent}`);
+    // });
+
+    copydBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      navigator.clipboard.writeText(`${content.textContent} — ${qotAuthor.textContent}`);
+      copydBtn.style.color = "green";
+      copydBtn.title = "Copied!";
+      setTimeout(() => {
+        copydBtn.style.color = "";
+        copydBtn.title = "Copy the quote";
+      }, 1000);
+    });
+
+
+    // whatsapp btn
+    const whatsappBtn = document.querySelector("#whatsapp");
+
+    whatsappBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const quoteMessage = `${content.textContent} — ${qotAuthor.textContent}`;
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(quoteMessage)}`;
+
+      window.open(whatsappUrl, "_blank"); // WhatsApp Web / App open hoga with quote filled
+    });
+
+
+
+    nexBtn.addEventListener("click", getRandomQuote);
+  </script>
 
 
 
 </body>
+
 </html>
